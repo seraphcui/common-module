@@ -5,7 +5,7 @@
 
     <groupId>com.tmirob.medical</groupId>
     <artifactId>taimi-common-module</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.1</version>
     <packaging>jar</packaging>
 
     <name>taimi-common-module</name>
