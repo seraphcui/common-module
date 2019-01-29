@@ -24,8 +24,8 @@ public interface PersonRepository extends JpaRepository<Person, Long>, JpaSpecif
 
     List<Person> findByRole(Person.RoleType roleType);
 
-    @Query(value = "select person from Person person where :fingerPrintId in person.fingerprints")
-    Person findOneByFingerPrintId(int fingerPrintId);
+    @Query(value = "select person from Person person inner join person.fingerprints fp where fp.id = :fingerPrintId")
+    Person findOneByFingerPrintId(@Param("fingerPrintId") Long fingerPrintId);
 
     @Query(value = "select person from Person person inner join person.position position where position.name = :name")
     List<Person> findByPositionName(@Param("name") String room);

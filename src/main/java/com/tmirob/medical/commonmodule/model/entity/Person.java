@@ -76,7 +76,7 @@ public class Person implements ICustomerId<Long> {
      */
     private String signature;
 
-    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "person", targetEntity = FingerPrint.class)
+    @OneToMany(cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST}, mappedBy = "person", targetEntity = FingerPrint.class)
     private List<FingerPrint> fingerprints;
 
     @Override
@@ -177,7 +177,7 @@ public class Person implements ICustomerId<Long> {
         this.fingerprints.add(fingerPrint);
     }
 
-    public void deleteFingerprint(int fingerPrintId) {
+    public void deleteFingerprint(Long fingerPrintId) {
         for (FingerPrint fingerPrint : this.fingerprints) {
             if (fingerPrintId == fingerPrint.getId()) {
                 this.fingerprints.remove(fingerPrint);

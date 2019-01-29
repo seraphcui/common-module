@@ -11,7 +11,6 @@ import java.io.Serializable;
  * @date 2018/10/19
  */
 @Entity
-@Table(name = "position")
 public class Position implements ICustomerId<Long> {
 
 
