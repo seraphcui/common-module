@@ -1,16 +1,12 @@
 package com.tmirob.medical.commonmodule.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tmirob.medical.commonmodule.model.utility.ICustomerId;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.JoinColumnOrFormula;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.hibernate.annotations.*;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
 import java.util.List;
 
 /**
@@ -69,15 +65,27 @@ public class Person implements ICustomerId<Long> {
     @Column(nullable = false)
     private RoleType role;
 
-    private boolean online = true;
-
     /**
      * 电子签名图片url
      */
     private String signature;
 
-    @OneToMany(cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST}, mappedBy = "person", targetEntity = FingerPrint.class)
+    @OneToMany(cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST}, orphanRemoval = true,
+            fetch = FetchType.EAGER, mappedBy = "person", targetEntity = FingerPrint.class)
+    @Fetch(value = FetchMode.SUBSELECT)
     private List<FingerPrint> fingerprints;
+
+    /**
+     * 是否可以一键呼叫机器人。
+     * 默认是false。主任医师、副主任医师、主治医师设置为true。
+     */
+    private boolean oneButtonCallRobot = false;
+
+    /**
+     * 账号是否被锁。
+     * 默认是false。当申领阈值超过设置或者操作完成没有关闭抽屉，系统会自动锁账号。
+     */
+    private boolean isLocked = false;
 
     @Override
     public Long getId() {
@@ -149,14 +157,6 @@ public class Person implements ICustomerId<Long> {
         this.role = role;
     }
 
-    public boolean isOnline() {
-        return online;
-    }
-
-    public void setOnline(boolean online) {
-        this.online = online;
-    }
-
     public String getSignature() {
         return signature;
     }
@@ -179,11 +179,26 @@ public class Person implements ICustomerId<Long> {
 
     public void deleteFingerprint(Long fingerPrintId) {
         for (FingerPrint fingerPrint : this.fingerprints) {
-            if (fingerPrintId == fingerPrint.getId()) {
+            if (fingerPrintId.equals(fingerPrint.getId())) {
                 this.fingerprints.remove(fingerPrint);
                 break;
             }
         }
     }
 
+    public boolean isOneButtonCallRobot() {
+        return oneButtonCallRobot;
+    }
+
+    public void setOneButtonCallRobot(boolean oneButtonCallRobot) {
+        this.oneButtonCallRobot = oneButtonCallRobot;
+    }
+
+    public boolean isLocked() {
+        return isLocked;
+    }
+
+    public void setLocked(boolean locked) {
+        isLocked = locked;
+    }
 }

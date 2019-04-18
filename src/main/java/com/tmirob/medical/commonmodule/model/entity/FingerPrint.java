@@ -3,9 +3,11 @@ package com.tmirob.medical.commonmodule.model.entity;
 import com.tmirob.medical.commonmodule.model.utility.ICustomerId;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
 
 /**
  * @author seraph(yao.cui@tmirob.com)
@@ -37,7 +39,7 @@ public class FingerPrint implements ICustomerId<Long> {
     private Long id;
     private String name;
 
-    @Size(max = 4000)
+    @Size(max = 10000)
     private String feature;
     
     private FingerPrintStatus status;

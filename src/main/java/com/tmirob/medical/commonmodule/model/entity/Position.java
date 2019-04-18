@@ -18,9 +18,10 @@ public class Position implements ICustomerId<Long> {
     @GeneratedValue(generator = "IdGenerator")
     @GenericGenerator(name = "IdGenerator", strategy = "com.tmirob.medical.commonmodule.model.utility.CustomerIdGenerator")
     private Long id;
-    @Column(nullable = false)
 
+    @Column(nullable = false, unique = true)
     private String name;
+
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Type type;

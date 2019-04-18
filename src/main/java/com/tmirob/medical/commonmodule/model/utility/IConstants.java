@@ -10,7 +10,7 @@ public final class IConstants {
     public static final String RETURN_TOKEN = "token";
 
     //for logger
-    public static final String EXCEPTION_IS = "Exception is:";
+    public static final String EXCEPTION_IS = "Exception is: ";
     public static final String CAUGHT_EXCEPTION = "Caught exception when ";
 
     //for http
